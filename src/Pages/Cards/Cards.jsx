@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Box,
   Card,
@@ -78,27 +78,55 @@ const ImageCarousel = ({ location, currentIndex, onPrevious, onNext, loading }) 
 };
 
 const Cards = ({ selectedCategory }) => {
-  const [loading, setLoading] = useState(true);
+  // State to track if we're loading the data initially
+  const [initialLoading, setInitialLoading] = useState(true);
+  // State to track if we're just changing categories
+  const [categoryChanging, setCategoryChanging] = useState(false);
+  // Cache for the loaded data
+  const [cachedLocations, setCachedLocations] = useState(null);
 
+  // Simulate initial data loading - this would be an API call in a real app
   useEffect(() => {
-    setLoading(true); // Reset loading state when category changes
-    const timeout = setTimeout(() => setLoading(false), 2000);
-    return () => clearTimeout(timeout);
-  }, [selectedCategory]);
+    if (!cachedLocations) {
+      const loadData = setTimeout(() => {
+        setCachedLocations(locations);
+        setInitialLoading(false);
+      }, 2000);
+      
+      return () => clearTimeout(loadData);
+    }
+  }, [cachedLocations]);
 
-  const filteredLocations =
-    selectedCategory === 'All'
-      ? locations
-      : locations.filter((location) => location.category === selectedCategory);
-
-  const [currentIndices, setCurrentIndices] = useState(() =>
-    filteredLocations.map(() => 0)
-  );
-
+  // Handle category changes with minimal loading state
   useEffect(() => {
-    // Reset carousel indices when category changes
-    setCurrentIndices(filteredLocations.map(() => 0));
-  }, [filteredLocations]);
+    if (cachedLocations) {
+      setCategoryChanging(true);
+      const categoryChangeTimeout = setTimeout(() => {
+        setCategoryChanging(false);
+      }, 300); // Much shorter loading time for filtering cached data
+      
+      return () => clearTimeout(categoryChangeTimeout);
+    }
+  }, [selectedCategory, cachedLocations]);
+
+  // Use memoized filtering to avoid unnecessary re-computation
+  const filteredLocations = useMemo(() => {
+    if (!cachedLocations) return [];
+    
+    return selectedCategory === 'All'
+      ? cachedLocations
+      : cachedLocations.filter((location) => location.category === selectedCategory);
+  }, [selectedCategory, cachedLocations]);
+
+  // Track carousel indices
+  const [currentIndices, setCurrentIndices] = useState([]);
+
+  // Reset carousel indices when filtered locations change
+  useEffect(() => {
+    if (filteredLocations.length > 0) {
+      setCurrentIndices(new Array(filteredLocations.length).fill(0));
+    }
+  }, [filteredLocations.length]);
 
   const handlePrevious = (index) => {
     setCurrentIndices((prevIndices) => {
@@ -118,17 +146,20 @@ const Cards = ({ selectedCategory }) => {
     });
   };
 
+  // Determine if we should show loading state
+  const isLoading = initialLoading || categoryChanging;
+
   return (
     <Box sx={{ width: '100%', boxSizing: 'border-box' }}>
       <Grid container spacing={2} sx={{ padding: 2, paddingX: 5 }}>
         {filteredLocations.map((location, index) => (
-          <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+          <Grid item key={location.id || index} xs={12} sm={6} md={4} lg={3}>
             <ImageCarousel
               location={location}
-              currentIndex={currentIndices[index]}
+              currentIndex={currentIndices[index] || 0}
               onPrevious={() => handlePrevious(index)}
               onNext={() => handleNext(index)}
-              loading={loading}
+              loading={isLoading}
             />
           </Grid>
         ))}
