@@ -41,7 +41,6 @@ const ImageCarousel = ({ location, currentIndex, onPrevious, onNext }) => {
           component="img"
           height="240px"
           sx={{
-            objectFit: 'contain',
           maxWidth:'350px', minWidth:'350px'}}
           image={location.locationImages[currentIndex].url}
           alt={location.location}
