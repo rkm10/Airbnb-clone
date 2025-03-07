@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Container, Tab, Tabs } from '@mui/material';
-import { tabsClasses } from '@mui/material/Tabs'; // ✅ Import added
 import {
   MdOutlineApartment,
   MdHouseSiding,
@@ -66,8 +65,6 @@ const Options = () => {
           top: '80px',
           zIndex: 1000,
           backgroundColor: 'white',
-          boxShadow: '0px 4px 10px rgba(0,0,0,0.1)', 
-          borderRadius: '99px'
         }}
       >
         <Box
@@ -86,10 +83,10 @@ const Options = () => {
             variant="scrollable"
             scrollButtons
             sx={{
-              [`&.${tabsClasses.scrollButtons}`]: {
+              ['&.${tabsClasses.scrollButtons}']: {
                 '&.Mui-disabled': { opacity: 0.3 },
               },
-              '& .MuiTabs-indicator': { backgroundColor: 'black' }, 
+              '& .MuiTabs-indicator': { color: 'black' },
             }}
           >
             {locationsTab.map((tab) => (
@@ -97,9 +94,7 @@ const Options = () => {
                 key={tab.id}
                 icon={tab.icon}
                 label={tab.label}
-                sx={{
-                  color: value === tab.id - 1 ? 'black' : 'gray', // ✅ Active tab color
-                }}
+                sx={{ color: 'black' }}
               />
             ))}
           </Tabs>
