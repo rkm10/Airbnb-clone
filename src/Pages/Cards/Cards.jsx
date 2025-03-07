@@ -6,7 +6,7 @@ import {
   CardContent,
   CardMedia,
   Typography,
-  Grid,
+  Grid2,
   Button,
 } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -120,18 +120,18 @@ const Cards = ({ selectedCategory }) => {
 
   return (
     <Box sx={{ width: '100%', boxSizing: 'border-box' }}>
-      <Grid container spacing={2} sx={{ padding: 2, paddingX: 5 }}>
+      <Grid2 container spacing={2} sx={{ padding: 2, paddingX: 5 }}>
         {filteredLocations.map((location, index) => (
-          <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+          <Grid2 item key={index} xs={12} sm={6} md={4} lg={3}>
             <ImageCarousel
               location={location}
               currentIndex={currentIndices[index]}
               onPrevious={() => handlePrevious(index)}
               onNext={() => handleNext(index)}
             />
-          </Grid>
+          </Grid2>
         ))}
-      </Grid>
+      </Grid2>
     </Box>
   );
 };
