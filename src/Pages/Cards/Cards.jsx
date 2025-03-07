@@ -39,7 +39,10 @@ const ImageCarousel = ({ location, currentIndex, onPrevious, onNext }) => {
       >
         <CardMedia
           component="img"
-          height="260px"
+          height="240px"
+          sx={{
+            objectFit: 'contain',
+          maxWidth:'350px', minWidth:'350px'}}
           image={location.locationImages[currentIndex].url}
           alt={location.location}
           onClick={()=>handleView()}
