@@ -2193,32 +2193,4 @@ export const locations = [
     category: "OMG!",
     reviews: 76
   },
-  {
-    id: 100,
-    locationImages: [
-      {
-        id: 1,
-        url: "https://picsum.photos/id/299/300/200"
-      },
-      {
-        id: 2,
-        url: "https://picsum.photos/id/192/300/200"
-      },
-      {
-        id: 3,
-        url: "https://picsum.photos/id/236/300/200"
-      },
-      {
-        id: 4,
-        url: "https://picsum.photos/id/239/300/200"
-      }
-    ],
-    location: "Random Place 100",
-    days: "Nov 10-30",
-    price: "$176 USD night",
-    isNew: false,
-    rating: 4.1,
-    category: "OMG!",
-    reviews: 146
-  }
 ];
